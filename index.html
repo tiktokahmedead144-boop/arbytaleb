@@ -8,6 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#4a90e2">
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -19,12 +20,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <script>
-        // هذا الكود يمنع ظهور صفحة الخطأ إذا تأخر التحميل
-        if (window.location.protocol === 'file:') {
-            window.alert = function(msg) { console.log(msg); };
+        // كود الطوارئ: إذا حدث خطأ، استمر في العمل ولا توقف التطبيق
+        window.onerror = function() { console.log("Error suppressed"); return true; };
+        // منع إعادة تحميل الصفحة بالخطأ
+        if (window.history && window.history.pushState) {
+            window.history.pushState(null, null, window.location.href);
+            window.onpopstate = function() { window.history.pushState(null, null, window.location.href); };
         }
-        // إجبار التطبيق على البقاء في الصفحة الحالية
-        window.history.pushState(null, null, window.location.href);
     </script>
 
     <style>
@@ -34,134 +36,135 @@
             --white: #ffffff; --text: #2d3436; 
         }
 
-        * { box-sizing: border-box; transition: 0.3s; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding: 0; min-height: 100vh; }
+        * { box-sizing: border-box; transition: 0.3s; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden; user-select: none; }
 
-        .swal2-popup { border-radius: 25px !important; font-family: 'Cairo', sans-serif !important; }
-        .swal2-styled.swal2-confirm { background-color: var(--main) !important; border-radius: 12px !important; }
-
-        #update-banner {
-            display: none; background: #e74c3c; color: white; 
-            text-align: center; padding: 12px; font-weight: bold; 
-            position: sticky; top: 0; z-index: 10000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        #update-banner a { color: #fff; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 8px; text-decoration: none; margin-right: 10px; border: 1px solid white; }
-
-        .container { 
-            width: 100%; max-width: 950px; background: var(--white); 
-            border-radius: 30px; padding: 25px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05); margin: 10px auto; 
-        }
-
-        .header-brand { text-align: center; margin-bottom: 20px; }
-        .header-brand img { width: 90px; margin-bottom: 10px; }
-        .header-brand h1 { font-size: 2.2rem; margin: 0; color: var(--main); font-weight: 900; }
-        
-        .social-bar { 
-            display: flex; justify-content: center; gap: 15px; 
-            margin: 20px 0; border-bottom: 1px solid #eee; padding-bottom: 20px; 
-        }
-        .social-bar a { font-size: 24px; text-decoration: none; color: var(--text); display: none; }
-
-        .btn { 
-            width: 100%; padding: 15px; border-radius: 15px; border: none; 
-            font-weight: 700; cursor: pointer; display: flex; 
-            align-items: center; justify-content: center; gap: 10px; 
-            margin-bottom: 12px; font-size: 16px; color: white;
-        }
-        .btn-main { background: linear-gradient(135deg, #4a90e2, #2563eb); }
-        .btn-sec { background: linear-gradient(135deg, #2ecc71, #219150); }
-        .btn-video { background: linear-gradient(135deg, #e67e22, #c2410c); }
-        .btn-outline { background: #fff; border: 2px solid #e2e8f0; color: #64748b; }
-
-        .grid-cards { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); 
-            gap: 15px; margin-bottom: 20px; 
-        }
-        .card { 
-            background: #fff; border: 2px solid #f1f5f9; border-radius: 20px; 
-            padding: 20px; text-align: center; cursor: pointer; border-bottom: 4px solid #cbd5e1;
-        }
-        .card:hover { border-color: var(--main); transform: translateY(-5px); }
-        .card i { font-size: 30px; margin-bottom: 10px; display: block; color: var(--main); }
-
-        /* ستايل المكتبة الجديد */
-        .grade-group { background: transparent; border: none; margin-bottom: 30px; }
-        .grade-title { 
-            background: #fff; color: var(--main); padding: 10px 20px; border-radius: 15px; 
-            font-weight: 900; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            margin-bottom: 15px; border: 2px solid #e2e8f0; display: inline-block; 
-        }
-        .lesson-card {
-            background: #fff; border-radius: 18px; padding: 15px; margin-bottom: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid #f1f5f9; border-right: 5px solid var(--sec);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03); cursor: pointer; position: relative; overflow: hidden;
-        }
-        .lesson-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); border-color: var(--main); }
-        .lesson-info { display: flex; align-items: center; gap: 15px; }
-        .lesson-icon-box {
-            width: 45px; height: 45px; background: #f0fdf4; color: var(--sec);
-            border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px;
-        }
-        .lesson-text h4 { margin: 0; font-size: 16px; font-weight: 700; color: #334155; }
-        .lesson-text span { font-size: 12px; color: #94a3b8; }
-        .lesson-btn {
-            background: var(--bg); color: var(--main); width: 35px; height: 35px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px;
-        }
-
-        #q-timer { font-size: 28px; font-weight: 900; color: var(--err); }
-        .prog-bg { width:100%; height:8px; background:#eee; border-radius:10px; margin: 15px 0; overflow:hidden; }
-        #timer-bar { width:100%; height:100%; background:var(--main); transition:1s linear; }
-
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 15px; outline: none; }
-        
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 99999; justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: white; width: 100%; max-width: 750px; border-radius: 25px; padding: 25px; max-height: 90vh; overflow-y: auto; }
-
-        @media (max-width: 600px) { .grid-cards { grid-template-columns: 1fr 1fr; } }
-
+        /* لودر التحميل */
         #global-loader {
             display: flex; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 1);
             z-index: 20000; justify-content: center;
             align-items: center; flex-direction: column;
+            transition: opacity 0.5s ease;
         }
         .spinner {
-            width: 60px; height: 60px; border: 6px solid #f3f3f3;
-            border-top: 6px solid var(--main); border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 15px;
+            width: 50px; height: 50px; border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--main); border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin-bottom: 15px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loader-text { font-weight: bold; color: var(--main); font-size: 18px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
+        /* التنبيهات */
+        .swal2-popup { border-radius: 20px !important; font-family: 'Cairo', sans-serif !important; }
+        .swal2-styled.swal2-confirm { background-color: var(--main) !important; border-radius: 10px !important; }
+
+        /* شريط التحديث */
+        #update-banner {
+            display: none; background: #e74c3c; color: white; 
+            text-align: center; padding: 10px; font-weight: bold; font-size: 14px;
+            position: sticky; top: 0; z-index: 10000; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #update-banner a { color: #fff; background: rgba(0,0,0,0.2); padding: 3px 10px; border-radius: 5px; text-decoration: none; margin-right: 10px; border: 1px solid white; font-size: 12px; }
+
+        /* الحاوية */
+        .container { 
+            width: 100%; max-width: 800px; background: var(--white); 
+            min-height: 100vh; padding: 20px; margin: 0 auto; 
+            padding-bottom: 60px;
+        }
+        @media (min-width: 768px) {
+            .container { border-radius: 30px; margin: 20px auto; min-height: auto; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        }
+
+        /* الهيدر */
+        .header-brand { text-align: center; margin-bottom: 20px; margin-top: 10px; }
+        .header-brand img { width: 80px; margin-bottom: 5px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .header-brand h1 { font-size: 1.6rem; margin: 0; color: var(--main); font-weight: 800; }
+        
+        .social-bar { 
+            display: flex; justify-content: center; gap: 18px; 
+            margin: 15px 0; border-bottom: 1px solid #eee; padding-bottom: 15px; 
+        }
+        .social-bar a { font-size: 26px; text-decoration: none; color: var(--text); display: none; cursor: pointer; }
+        .social-bar a:active { transform: scale(0.9); }
+
+        /* الأزرار والحقول */
+        .btn { 
+            width: 100%; padding: 14px; border-radius: 12px; border: none; 
+            font-weight: 700; cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; gap: 10px; 
+            margin-bottom: 10px; font-size: 15px; color: white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .btn:active { transform: scale(0.97); box-shadow: none; }
+        .btn-main { background: linear-gradient(135deg, #4a90e2, #2563eb); }
+        .btn-sec { background: linear-gradient(135deg, #2ecc71, #219150); }
+        .btn-video { background: linear-gradient(135deg, #e67e22, #c2410c); }
+        .btn-outline { background: #fff; border: 2px solid #e2e8f0; color: #64748b; box-shadow: none; }
+
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; outline: none; background: #fafafa; }
+        input:focus, select:focus { border-color: var(--main); background: #fff; }
+
+        /* الكروت */
+        .grid-cards { 
+            display: grid; grid-template-columns: 1fr 1fr; 
+            gap: 12px; margin-bottom: 20px; 
+        }
+        @media (min-width: 600px) { .grid-cards { grid-template-columns: repeat(4, 1fr); } }
+
+        .card { 
+            background: #fff; border: 1px solid #f1f5f9; border-radius: 18px; 
+            padding: 15px 10px; text-align: center; cursor: pointer; 
+            border-bottom: 4px solid #cbd5e1;
+        }
+        .card:active { border-bottom-width: 1px; transform: translateY(3px); }
+        .card i { font-size: 28px; margin-bottom: 8px; display: block; color: var(--main); }
+        .card b { display: block; font-size: 0.95rem; color: #333; }
+
+        /* المكتبة */
+        .grade-group { margin-bottom: 25px; }
+        .grade-title { 
+            background: #fff; color: var(--main); padding: 8px 20px; border-radius: 20px; 
+            font-weight: 800; font-size: 1rem; border: 1px solid #eee; display: inline-block; margin-bottom: 10px;
+        }
+        .lesson-card {
+            background: #fff; border-radius: 15px; padding: 12px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid #f1f5f9; border-right: 4px solid var(--sec);
+            cursor: pointer;
+        }
+        .lesson-info { display: flex; align-items: center; gap: 10px; }
+        .lesson-icon-box {
+            width: 40px; height: 40px; background: #f0fdf4; color: var(--sec);
+            border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px;
+        }
+        .lesson-text h4 { margin: 0; font-size: 14px; font-weight: 700; color: #333; }
+        .lesson-text span { font-size: 11px; color: #888; }
+
+        /* الاختبار */
+        #q-timer { font-size: 24px; font-weight: 900; color: var(--err); }
+        .prog-bg { width:100%; height:8px; background:#eee; border-radius:10px; margin: 15px 0; overflow:hidden; }
+        #timer-bar { width:100%; height:100%; background:var(--main); transition:1s linear; }
+        
         #countdown-overlay {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 30000; justify-content: center; align-items: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 30000; justify-content: center; align-items: center;
         }
-        #countdown-text {
-            font-size: 8rem; font-weight: 900; color: #fff;
-            text-shadow: 0 0 20px var(--main);
-            animation: popEffect 0.9s infinite;
-        }
-        @keyframes popEffect {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 0; }
-        }
+        #countdown-text { font-size: 6rem; font-weight: 900; color: #fff; text-shadow: 0 0 20px var(--main); }
+        
+        /* النافذة */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: white; width: 100%; max-width: 700px; border-radius: 20px; padding: 20px; max-height: 90vh; overflow-y: auto; }
+
     </style>
 </head>
 <body>
-    <div id="update-banner"> <span id="update-msg"></span> <a id="update-link" href="#" target="_blank">تحميل الآن</a> </div>
+    <div id="update-banner"> <span id="update-msg"></span> <a id="update-link" href="#" target="_blank">تحديث</a> </div>
     
     <div id="global-loader"> 
         <div class="spinner"></div> 
-        <div class="loader-text">جاري الاتصال بالسيرفر...</div> 
+        <div class="loader-text">جاري التحميل...</div> 
     </div>
 
     <div id="countdown-overlay"> <div id="countdown-text"></div> </div>
@@ -176,82 +179,81 @@
             <div class="header-brand">
                 <img id="disp-logo" src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png">
                 <h1 id="disp-title">منصة لغتي هويتي</h1>
-                <p id="disp-subtitle">جاري التحميل...</p>
+                <p id="disp-subtitle">مرحباً بك يا بطل!</p>
             </div>
             <div class="social-bar"> 
-                <a id="link-tele" href="#" target="_blank" style="color:#0088cc;"><i class="fab fa-telegram"></i></a> 
-                <a id="link-tiktok" href="#" target="_blank"><i class="fab fa-tiktok"></i></a> 
-                <a id="link-wa" href="#" target="_blank" style="color:#25d366;"><i class="fab fa-whatsapp"></i></a> 
-                <a id="link-face" href="#" target="_blank" style="color:#1877f2;"><i class="fab fa-facebook"></i></a> 
+                <a id="link-tele" onclick="openLink(this)"><i class="fab fa-telegram"></i></a> 
+                <a id="link-tiktok" onclick="openLink(this)"><i class="fab fa-tiktok"></i></a> 
+                <a id="link-wa" onclick="openLink(this)" style="color:#25d366;"><i class="fab fa-whatsapp"></i></a> 
+                <a id="link-face" onclick="openLink(this)" style="color:#1877f2;"><i class="fab fa-facebook"></i></a> 
             </div>
             
-            <div style="background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
-                <label><b>بيانات الطالب:</b></label>
-                <input type="text" id="std-name" placeholder="ادخل اسمك الثلاثي">
+            <div style="background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+                <label style="font-size:14px;"><b>بيانات الطالب:</b></label>
+                <input type="text" id="std-name" placeholder="اسمك الثلاثي">
                 <select id="std-grade">
-                    <option value="">-- اختر الصف الدراسي --</option>
-                    <optgroup label="ابتدائي"><option value="4">رابع ابتدائي</option><option value="5">خامس ابتدائي</option><option value="6">سادس ابتدائي</option></optgroup>
-                    <optgroup label="إعدادي"><option value="7">أول إعدادي</option><option value="8">ثاني إعدادي</option><option value="9">ثالث إعدادي</option></optgroup>
+                    <option value="">-- اختر صفك --</option>
+                    <optgroup label="ابتدائي"><option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option></optgroup>
+                    <optgroup label="إعدادي"><option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option></optgroup>
                 </select>
             </div>
 
             <div class="grid-cards">
-                <div class="card" onclick="openSection('grammar')"> <i class="fas fa-magic"></i><b>روائع النحو</b> </div>
-                <div class="card" onclick="openSection('vocab')"> <i class="fas fa-language"></i><b>قاموسنا</b> </div>
+                <div class="card" onclick="openSection('grammar')"> <i class="fas fa-magic"></i><b>النحو</b> </div>
+                <div class="card" onclick="openSection('vocab')"> <i class="fas fa-language"></i><b>المفردات</b> </div>
                 <div class="card" onclick="openLibrary()"> <i class="fas fa-book-reader"></i><b>المكتبة</b> </div>
-                <div class="card" onclick="openVideos()"> <i class="fas fa-video"></i><b>الفيديوهات</b> </div>
+                <div class="card" onclick="openVideos()"> <i class="fas fa-video"></i><b>الفيديو</b> </div>
             </div>
-            <center><a href="admin.html" style="color:#ccc; text-decoration:none; font-size:12px;">الإدارة</a></center>
+            <center><a href="admin.html" style="color:#ddd; font-size:11px; text-decoration:none;">الإدارة</a></center>
         </div>
 
         <div id="page-periods" style="display: none;">
-            <h2 id="period-title" style="text-align: center; color: var(--main);"></h2>
+            <h2 id="period-title" style="text-align: center; color: var(--main); margin-bottom:20px;"></h2>
             <div class="grid-cards">
                 <div class="card" onclick="startQuiz('شامل')"> <i class="fas fa-globe"></i><b>شامل</b> </div>
-                <div class="card" onclick="startQuiz('ترم1')"> <i class="fas fa-book"></i><b>الترم 1</b> </div>
-                <div class="card" onclick="startQuiz('ترم2')"> <i class="fas fa-book-open"></i><b>الترم 2</b> </div>
+                <div class="card" onclick="startQuiz('ترم1')"> <i class="fas fa-book"></i><b>ترم 1</b> </div>
+                <div class="card" onclick="startQuiz('ترم2')"> <i class="fas fa-book-open"></i><b>ترم 2</b> </div>
             </div>
             <div id="month-grid" class="grid-cards"></div>
             <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button>
         </div>
 
         <div id="page-quiz" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <button class="btn-outline" style="width:auto; padding:5px 15px;" onclick="location.reload()">خروج</button>
-                <span id="q-count" style="font-weight: bold; color: var(--main);"></span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:15px;">
+                <button class="btn-outline" style="width:auto; padding:5px 12px; font-size:13px;" onclick="location.reload()">خروج</button>
+                <span id="q-count" style="font-weight: bold; color: var(--main); font-size:14px;"></span>
                 <span id="q-timer">30</span>
             </div>
             <div class="prog-bg"><div id="timer-bar"></div></div>
-            <div id="q-box" style="background:#f8fafc; padding:25px; border-radius:20px; text-align:center; margin-bottom:20px; border:1px solid #e2e8f0;">
-                <h3 id="q-text" style="margin:0;"></h3>
+            <div id="q-box" style="background:#f8fafc; padding:20px; border-radius:15px; text-align:center; margin-bottom:15px; border:1px solid #e2e8f0;">
+                <h3 id="q-text" style="margin:0; font-size:1.1rem; line-height:1.6;"></h3>
             </div>
             <div id="q-options" style="display: grid; grid-template-columns: 1fr; gap: 10px;"></div>
-            <div id="q-rule" style="display: none; background: #fff9db; padding: 15px; border-radius: 15px; margin-top: 15px; border-right: 5px solid #fcc419;">
-                <b>💡 القاعدة التعليمية:</b>
-                <p id="rule-text" style="margin:5px 0 0;"></p>
+            <div id="q-rule" style="display: none; background: #fff9db; padding: 12px; border-radius: 12px; margin-top: 15px; border-right: 4px solid #fcc419;">
+                <b>💡 معلومة:</b> <p id="rule-text" style="margin:5px 0 0; font-size:13px;"></p>
             </div>
-            <button id="btn-next" class="btn btn-main" style="display: none; margin-top: 20px;">السؤال التالي <i class="fas fa-chevron-left"></i></button>
+            <button id="btn-next" class="btn btn-main" style="display: none; margin-top: 20px;">التالي <i class="fas fa-chevron-left"></i></button>
         </div>
 
         <div id="page-library" style="display: none;">
-            <h2 style="text-align: center; color: var(--main);">المكتبة الرقمية 📚</h2>
+            <h2 style="text-align: center; color: var(--main);">المكتبة 📚</h2>
             <div id="lib-content"></div>
             <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button>
         </div>
 
         <div id="page-videos" style="display: none;">
-            <h2 style="text-align: center; color: var(--video);">شروحات الفيديو 🎬</h2>
+            <h2 style="text-align: center; color: var(--video);">الفيديوهات 🎬</h2>
             <div id="vid-content"></div>
             <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button>
         </div>
 
         <div id="page-result" style="display: none; text-align: center;">
-            <h2 id="res-score" style="font-size: 32px; color: var(--main);"></h2>
-            <div id="certificate" style="border: 15px double #d4af37; padding: 40px 20px; background: #fff; margin: 20px 0; border-radius: 10px;">
+            <h2 id="res-score" style="font-size: 30px; color: var(--main);"></h2>
+            <div id="certificate" style="border: 10px double #d4af37; padding: 30px 15px; background: #fff; margin: 20px 0; border-radius: 10px;">
                 <h1 style="color:#d4af37; margin:0;">شهادة تقدير</h1>
                 <p id="cert-teacher-txt">يمنح الأستاذ ... هذه الشهادة للطالب/ة:</p>
-                <h2 id="cert-name" style="border-bottom: 2px solid #d4af37; display: inline-block; padding: 0 30px; margin: 10px 0;"></h2>
-                <p>لتحقيقه درجات متميزة في اختبارات اللغة العربية.</p>
+                <h2 id="cert-name" style="border-bottom: 2px solid #d4af37; display: inline-block; padding: 0 20px; margin: 10px 0;"></h2>
+                <p>لتفوقه في اللغة العربية</p>
             </div>
             <button class="btn btn-main" onclick="window.print()">طباعة</button>
             <button class="btn btn-outline" onclick="location.reload()">الرئيسية</button>
@@ -260,14 +262,15 @@
 
     <div id="modal-view" class="modal">
         <div class="modal-content">
-            <span onclick="document.getElementById('modal-view').style.display='none'" style="float:left; cursor:pointer; font-size:35px;">×</span>
-            <h2 id="view-tit"></h2>
-            <div id="view-bod" style="white-space: pre-wrap;"></div>
-            <img id="view-img" style="display:none; width:100%; margin-top:15px; border-radius:15px;">
+            <span onclick="document.getElementById('modal-view').style.display='none'" style="float:left; cursor:pointer; font-size:35px; color:#999;">×</span>
+            <h2 id="view-tit" style="font-size:1.2rem;"></h2>
+            <div id="view-bod" style="white-space: pre-wrap; font-size:15px; line-height:1.7;"></div>
+            <img id="view-img" style="display:none; width:100%; margin-top:15px; border-radius:10px;">
         </div>
     </div>
 
     <script>
+        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCgpj7MLByWpTVUE2Tg3DQ0pwsUjLhAyEM",
             authDomain: "ahmedead-5185c.firebaseapp.com",
@@ -277,87 +280,95 @@
             appId: "1:559908876854:web:e8e7c151e984dc13219e97"
         };
 
+        // تهيئة Firebase
+        let db;
         try {
             firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-            console.log("Firebase Initialized via Compat");
-        } catch(e) {
-            console.error(e);
-            alert("خطأ في الاتصال: " + e.message);
-        }
+            db = firebase.firestore();
+        } catch(e) { console.error("Firebase Error", e); }
 
-        const db = firebase.firestore();
-        
-        window.showLoader = () => document.getElementById('global-loader').style.display = 'flex';
-        window.hideLoader = () => document.getElementById('global-loader').style.display = 'none';
+        // إخفاء اللودر فوراً بعد 2 ثانية كحد أقصى لضمان فتح الصفحة
+        setTimeout(() => {
+            const loader = document.getElementById('global-loader');
+            if(loader) loader.style.display = 'none';
+        }, 2000);
 
-        function loadSiteConfig() {
-            showLoader();
+        function showLoader() { document.getElementById('global-loader').style.display = 'flex'; }
+        function hideLoader() { document.getElementById('global-loader').style.display = 'none'; }
+
+        // تحميل الإعدادات في الخلفية
+        document.addEventListener("DOMContentLoaded", () => {
+            if(!db) return;
+            
+            // جلب روابط التحديث
             db.collection("settings").doc("app_config").get().then(doc => {
                 if(doc.exists) {
                     const data = doc.data();
                     if(data.download_url) document.getElementById('update-link').href = data.download_url;
                     if(data.show_banner) {
                         document.getElementById('update-banner').style.display = 'block';
-                        document.getElementById('update-msg').innerText = data.update_msg || "يوجد تحديث جديد!";
+                        document.getElementById('update-msg').innerText = data.update_msg || "تحديث جديد!";
                     }
                 }
-            }).catch(e=>console.log(e));
+            }).catch(()=>{});
 
+            // جلب معلومات الموقع
             db.collection("settings").doc("site_info").get().then(doc => {
-                let welcomeMsg = "أهلاً بك في منصة لغتي هويتي";
+                let welcomeMsg = "أهلاً بك يا بطل";
                 if(doc.exists) {
                     const info = doc.data();
                     if(info.title) { document.title = info.title; document.getElementById('disp-title').innerText = info.title; }
                     if(info.subtitle) {
                         document.getElementById('disp-subtitle').innerText = info.subtitle;
-                        document.getElementById('cert-teacher-txt').innerText = `يمنح ${info.subtitle.split('مع')[1] || "الأستاذ"} هذه الشهادة للطالب/ة:`;
+                        const teacherName = info.subtitle.includes('مع') ? info.subtitle.split('مع')[1] : "الأستاذ";
+                        document.getElementById('cert-teacher-txt').innerText = `يمنح ${teacherName} هذه الشهادة للطالب/ة:`;
                     }
                     if(info.logo) document.getElementById('disp-logo').src = info.logo;
                     if(info.welcome) welcomeMsg = info.welcome;
 
-                    const updateLink = (id, url) => {
+                    const setLink = (id, url) => {
                         const el = document.getElementById(id);
                         if(url) {
                             if(id === 'link-wa' && !url.includes('http')) url = `https://wa.me/20${url.replace(/^0+/, '')}`;
-                            el.href = url; el.style.display = 'inline-block';
-                            el.onclick = (e) => { e.preventDefault(); window.open(url, '_system'); };
-                        } else el.style.display = 'none';
+                            el.setAttribute('data-url', url);
+                            el.style.display = 'inline-block';
+                        }
                     };
-                    updateLink('link-wa', info.wa); updateLink('link-tele', info.tele);
-                    updateLink('link-face', info.face); updateLink('link-tiktok', info.tiktok);
+                    setLink('link-wa', info.wa); setLink('link-tele', info.tele);
+                    setLink('link-face', info.face); setLink('link-tiktok', info.tiktok);
                 }
-                setTimeout(() => {
-                    Swal.fire({
-                        title: 'مرحباً بك يا بطل! 🚀',
-                        text: welcomeMsg,
-                        imageUrl: document.getElementById('disp-logo').src,
-                        imageWidth: 80, imageHeight: 80,
-                        confirmButtonText: 'ابدأ الرحلة',
-                        padding: '2em', backdrop: `rgba(0,0,123,0.4)`
-                    });
-                }, 1500);
-            }).catch(e=>console.log(e)).finally(()=>hideLoader());
-        }
-        window.onload = loadSiteConfig;
+                // إظهار رسالة ترحيبية صغيرة
+                const Toast = Swal.mixin({ toast: true, position: 'top', showConfirmButton: false, timer: 3000 });
+                Toast.fire({ icon: 'success', title: welcomeMsg });
+            }).catch(()=>{});
+        });
 
-        window.goBack = (id) => { document.querySelectorAll('.container > div').forEach(d => d.style.display = 'none'); document.getElementById(id).style.display = 'block'; window.scrollTo(0,0); };
+        function openLink(el) {
+            const url = el.getAttribute('data-url');
+            if(url) window.open(url, '_system');
+        }
+
+        function goBack(id) {
+            document.querySelectorAll('.container > div').forEach(d => d.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            window.scrollTo(0,0);
+        }
 
         let questions = [], curIdx = 0, score = 0, timer, timeLeft = 30, currentSection = '';
         const months = ["أكتوبر", "نوفمبر", "ديسمبر", "فبراير", "مارس", "أبريل"];
         const gradeNames = { "4": "رابع ابتدائي", "5": "خامس ابتدائي", "6": "سادس ابتدائي", "7": "أول إعدادي", "8": "ثاني إعدادي", "9": "ثالث إعدادي" };
 
-        window.openSection = (type) => {
+        function openSection(type) {
             const grade = document.getElementById('std-grade').value;
             const name = document.getElementById('std-name').value;
-            if(!name || !grade) return Swal.fire({icon: 'warning', text: 'يرجى كتابة الاسم واختيار الصف أولاً'});
+            if(!name || !grade) return Swal.fire({icon: 'warning', text: 'يرجى كتابة اسمك واختيار الصف'});
             currentSection = type;
             goBack('page-periods');
             document.getElementById('period-title').innerText = `اختبارات ${type === 'grammar' ? 'النحو' : 'المفردات'}`;
             document.getElementById('month-grid').innerHTML = months.map(m => `<div class="card" onclick="startQuiz('${m}')"><b>${m}</b></div>`).join('');
-        };
+        }
 
-        window.startQuiz = (period) => {
+        function startQuiz(period) {
             showLoader();
             const grade = document.getElementById('std-grade').value;
             let query = db.collection("questions").where("grade", "==", grade).where("type", "==", currentSection);
@@ -366,13 +377,14 @@
             query.get().then(snap => {
                 questions = snap.docs.map(d => ({id: d.id, ...d.data()})).sort(() => Math.random() - 0.5);
                 hideLoader();
-                if(!questions.length) return Swal.fire('تنبيه', 'لا توجد أسئلة مضافة حالياً.', 'info');
+                if(!questions.length) return Swal.fire('تنبيه', 'لا توجد أسئلة حالياً', 'info');
                 curIdx = 0; score = 0;
                 
                 document.getElementById('countdown-overlay').style.display = 'flex';
                 let count = 3;
+                const txt = document.getElementById('countdown-text');
                 const interval = setInterval(() => {
-                    document.getElementById('countdown-text').innerText = count > 0 ? count : "انطلق!";
+                    txt.innerText = count > 0 ? count : "انطلق!";
                     if(count > 0) document.getElementById('sound-beep').play().catch(e=>{});
                     else {
                         document.getElementById('sound-go').play().catch(e=>{});
@@ -381,8 +393,8 @@
                     }
                     count--;
                 }, 1000);
-            }).catch(e => { hideLoader(); Swal.fire('خطأ', 'تأكد من الانترنت', 'error'); });
-        };
+            }).catch(() => { hideLoader(); Swal.fire('خطأ', 'تأكد من الانترنت', 'error'); });
+        }
 
         function showQuestion() {
             if(curIdx >= questions.length) return endQuiz();
@@ -390,14 +402,14 @@
             document.getElementById('btn-next').style.display = 'none';
             document.getElementById('q-rule').style.display = 'none';
             const q = questions[curIdx];
-            document.getElementById('q-count').innerText = `سؤال ${curIdx+1} / ${questions.length}`;
+            document.getElementById('q-count').innerText = `${curIdx+1}/${questions.length}`;
             document.getElementById('q-text').innerText = q.q;
             let opts = [q.c, ...q.w].sort(() => Math.random() - 0.5);
             document.getElementById('q-options').innerHTML = opts.map(o => `<button class="btn btn-outline" style="text-align:right;" onclick="checkAnswer(this, '${o}')">${o}</button>`).join('');
             timer = setInterval(() => { timeLeft--; updateTimer(); if(timeLeft <= 0) checkAnswer(null, ''); }, 1000);
         }
 
-        window.checkAnswer = (btn, val) => {
+        function checkAnswer(btn, val) {
             clearInterval(timer);
             const q = questions[curIdx];
             document.querySelectorAll('#q-options button').forEach(b => b.style.pointerEvents = 'none');
@@ -411,7 +423,7 @@
             }
             if(q.rule) { document.getElementById('rule-text').innerText = q.rule; document.getElementById('q-rule').style.display = 'block'; }
             document.getElementById('btn-next').style.display = 'block';
-        };
+        }
 
         document.getElementById('btn-next').onclick = () => { curIdx++; showQuestion(); };
         function updateTimer() { document.getElementById('timer-bar').style.width = (timeLeft/30)*100 + "%"; document.getElementById('q-timer').innerText = timeLeft; }
@@ -419,7 +431,7 @@
         function endQuiz() {
             goBack('page-result');
             const percentage = (score / questions.length) * 100;
-            document.getElementById('res-score').innerText = `درجتك: ${score} من ${questions.length}`;
+            document.getElementById('res-score').innerText = `الدرجة: ${score} من ${questions.length}`;
             db.collection("results").add({
                 name: document.getElementById('std-name').value,
                 grade: document.getElementById('std-grade').value,
@@ -434,7 +446,7 @@
             } else document.getElementById('certificate').style.display = 'none';
         }
 
-        window.openLibrary = () => {
+        function openLibrary() {
             showLoader();
             goBack('page-library');
             db.collection("lessons").get().then(snap => {
@@ -448,7 +460,7 @@
                     div.innerHTML = `<div class="grade-title"><i class="fas fa-user-graduate"></i> ${gradeNames[g]}</div>`;
                     grps[g].forEach(lesson => {
                         let card = document.createElement('div'); card.className = 'lesson-card';
-                        card.innerHTML = `<div class="lesson-info"><div class="lesson-icon-box"><i class="fas fa-book"></i></div><div class="lesson-text"><h4>${lesson.title}</h4><span>اضغط للقراءة</span></div></div><div class="lesson-btn"><i class="fas fa-chevron-left"></i></div>`;
+                        card.innerHTML = `<div class="lesson-info"><div class="lesson-icon-box"><i class="fas fa-book"></i></div><div class="lesson-text"><h4>${lesson.title}</h4><span>اقرأ الدرس</span></div></div><div class="lesson-btn"><i class="fas fa-chevron-left"></i></div>`;
                         card.onclick = () => {
                             document.getElementById('view-tit').innerText = lesson.title;
                             document.getElementById('view-bod').innerText = lesson.body;
@@ -460,10 +472,10 @@
                     });
                     container.appendChild(div);
                 }
-            }).catch(e=>{ hideLoader(); });
-        };
+            }).catch(e=>{ hideLoader(); }).finally(()=>hideLoader());
+        }
 
-        window.openVideos = () => {
+        function openVideos() {
             showLoader();
             goBack('page-videos');
             db.collection("videos").get().then(snap => {
@@ -473,13 +485,12 @@
                     let link = v.url.includes('youtube') || v.url.includes('youtu.be') ? 
                         `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${v.url.split('v=')[1] || v.url.split('/').pop()}" frameborder="0" allowfullscreen style="border-radius:15px;"></iframe>` : 
                         `<a onclick="window.open('${v.url}', '_system')" class="btn btn-video">مشاهدة الفيديو</a>`;
-                    document.getElementById('vid-content').innerHTML += `<div class="grade-group" style="padding:15px; background:white; border-radius:15px; margin-bottom:15px;"><h3 style="margin-top:0;">${v.title} (${gradeNames[v.grade]})</h3>${link}</div>`;
+                    document.getElementById('vid-content').innerHTML += `<div class="grade-group" style="padding:15px; background:white; border-radius:15px; margin-bottom:15px;"><h3 style="margin-top:0; font-size:16px;">${v.title} (${gradeNames[v.grade]})</h3>${link}</div>`;
                 });
-            }).catch(e=>{ hideLoader(); });
-        };
-    </script>
-    <script>
-        // كود خاص لمنع إغلاق التطبيق عند الضغط على زر الرجوع
+            }).catch(e=>{ hideLoader(); }).finally(()=>hideLoader());
+        }
+
+        // كود خاص لمنع إغلاق التطبيق عند الرجوع
         document.addEventListener("backbutton", function(e){
             if(document.getElementById('page-home').style.display === 'block'){
                 e.preventDefault();
