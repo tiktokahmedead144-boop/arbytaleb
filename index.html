@@ -13,13 +13,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"> 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script> 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
-  
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script> 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script> 
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script> 
   <script>
-        // كود الطوارئ
+        // منع الأخطاء البسيطة
         window.onerror = function() { console.log("Error suppressed"); return true; };
         if (window.history && window.history.pushState) {
             window.history.pushState(null, null, window.location.href);
@@ -77,12 +75,12 @@
             background: white; color: var(--main); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* تخصيص SweetAlert */
+        /* SweetAlert تخصيص */
         .swal2-popup { border-radius: 25px !important; font-family: 'Cairo', sans-serif !important; box-shadow: 0 10px 40px rgba(0,0,0,0.1) !important; }
         .swal2-title { color: var(--main) !important; font-weight: 800 !important; }
         .swal2-styled.swal2-confirm { background-color: var(--main) !important; border-radius: 15px !important; }
 
-        /* شريط التحديث */
+        /* Banner */
         #update-banner {
             display: none; background: #e74c3c; color: white; 
             text-align: center; padding: 10px; font-weight: bold; font-size: 14px;
@@ -90,7 +88,7 @@
         }
         #update-banner a { color: #fff; background: rgba(0,0,0,0.2); padding: 3px 10px; border-radius: 5px; text-decoration: none; margin-right: 10px; border: 1px solid white; font-size: 12px; }
 
-        /* الحاوية */
+        /* Container */
         .container { 
             width: 100%; max-width: 800px; background: var(--white); 
             min-height: 100vh; padding: 20px; margin: 0 auto; 
@@ -100,11 +98,10 @@
             .container { border-radius: 30px; margin: 20px auto; min-height: auto; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         }
 
-        /* الهيدر */
+        /* Header */
         .header-brand { text-align: center; margin-bottom: 20px; margin-top: 10px; }
         .header-brand img { width: 85px; margin-bottom: 5px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
         .header-brand h1 { font-size: 1.7rem; margin: 0; color: var(--main); font-weight: 800; }
-        .header-brand p { color: #7f8c8d; margin: 0; font-size: 0.9rem; }
         
         .social-bar { 
             display: flex; justify-content: center; gap: 18px; 
@@ -113,7 +110,7 @@
         .social-bar a { font-size: 26px; text-decoration: none; color: var(--text); display: none; cursor: pointer; }
         .social-bar a:active { transform: scale(0.9); }
 
-        /* الأزرار والحقول */
+        /* Elements */
         .btn { 
             width: 100%; padding: 14px; border-radius: 12px; border: none; 
             font-weight: 700; cursor: pointer; display: flex; 
@@ -130,7 +127,7 @@
         input, select { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; outline: none; background: #fafafa; }
         input:focus, select:focus { border-color: var(--main); background: #fff; }
 
-        /* الكروت */
+        /* Cards */
         .grid-cards { 
             display: grid; grid-template-columns: 1fr 1fr; 
             gap: 12px; margin-bottom: 20px; 
@@ -146,7 +143,7 @@
         .card i { font-size: 28px; margin-bottom: 8px; display: block; color: var(--main); }
         .card b { display: block; font-size: 0.95rem; color: #333; }
 
-        /* المكتبة */
+        /* Library */
         .grade-group { margin-bottom: 25px; }
         .grade-title { 
             background: #fff; color: var(--main); padding: 8px 20px; border-radius: 20px; 
@@ -166,59 +163,45 @@
         .lesson-text h4 { margin: 0; font-size: 14px; font-weight: 700; color: #333; }
         .lesson-text span { font-size: 11px; color: #888; }
 
-        /* الاختبار */
+        /* Quiz */
         #q-timer { font-size: 24px; font-weight: 900; color: var(--err); }
         .prog-bg { width:100%; height:8px; background:#eee; border-radius:10px; margin: 15px 0; overflow:hidden; }
         #timer-bar { width:100%; height:100%; background:var(--main); transition:1s linear; }
-        
-        #countdown-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9); z-index: 30000; justify-content: center; align-items: center;
-        }
+        #countdown-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 30000; justify-content: center; align-items: center; }
         #countdown-text { font-size: 6rem; font-weight: 900; color: #fff; text-shadow: 0 0 20px var(--main); }
         
-        /* النافذة */
+        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; justify-content: center; align-items: center; padding: 15px; }
         .modal-content { background: white; width: 100%; max-width: 700px; border-radius: 20px; padding: 20px; max-height: 90vh; overflow-y: auto; }
-
+        
+        /* Login Float Area */
+        #guest-login-area {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            padding: 20px; border-radius: 15px; margin-top: 30px;
+            text-align: center; border: 1px dashed #cbd5e1; display: none;
+        }
     </style> 
  </head> 
  <body> 
-  
-  <div id="auth-overlay">
-    <div class="auth-box animate__animated animate__fadeInDown">
-        <img src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png" width="80" style="margin-bottom:15px">
-        <h2 style="color:var(--main); margin:0 0 20px; font-size:1.5rem;">منصة لغتي هويتي</h2>
-        
-        <div class="auth-tabs">
-            <button class="active" onclick="switchAuth('login')">دخول</button>
-            <button onclick="switchAuth('register')">حساب جديد</button>
-        </div>
-
-        <div id="form-login">
-            <input type="email" id="log-email" placeholder="البريد الإلكتروني">
-            <input type="password" id="log-pass" placeholder="كلمة المرور">
-            <button class="btn btn-main" onclick="userLogin()">تسجيل دخول</button>
-        </div>
-
-        <div id="form-register" style="display:none;">
-            <input type="text" id="reg-name" placeholder="اسمك الثلاثي">
-            <select id="reg-grade">
-                <option value="">-- اختر صفك --</option>
-                <optgroup label="ابتدائي"><option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option></optgroup>
-                <optgroup label="إعدادي"><option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option></optgroup>
-            </select>
-            <input type="email" id="reg-email" placeholder="البريد الإلكتروني">
-            <input type="password" id="reg-pass" placeholder="كلمة المرور (6 أرقام على الأقل)">
-            <button class="btn btn-sec" onclick="userRegister()">إنشاء حساب</button>
-        </div>
-
-        <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
-            <button class="btn btn-outline" onclick="guestLogin()" style="font-size:13px;">الدخول كزائر (لن يتم حفظ تقدمك)</button>
-        </div>
-    </div>
-  </div>
-
+  <div id="auth-overlay"> 
+   <div class="auth-box animate__animated animate__fadeInDown"> 
+    <img src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png" width="80" style="margin-bottom:15px"> 
+    <h2 style="color:var(--main); margin:0 0 20px; font-size:1.5rem;">منصة لغتي هويتي</h2> 
+    <div class="auth-tabs"> <button class="active" onclick="switchAuth('login')">دخول</button> <button onclick="switchAuth('register')">حساب جديد</button> 
+    </div> 
+    <div id="form-login"> 
+     <input type="email" id="log-email" placeholder="البريد الإلكتروني"> 
+     <input type="password" id="log-pass" placeholder="كلمة المرور"> <button class="btn btn-main" onclick="userLogin()">تسجيل دخول</button> 
+    </div> 
+    <div id="form-register" style="display:none;"> 
+     <input type="text" id="reg-name" placeholder="اسمك الثلاثي"> <select id="reg-grade"> <option value="">-- اختر صفك --</option> <optgroup label="ابتدائي"><option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option></optgroup> <optgroup label="إعدادي"><option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option></optgroup> </select> 
+     <input type="email" id="reg-email" placeholder="البريد الإلكتروني"> 
+     <input type="password" id="reg-pass" placeholder="كلمة المرور (6 أرقام على الأقل)"> <button class="btn btn-sec" onclick="userRegister()">إنشاء حساب</button> 
+    </div> 
+    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;"> <button class="btn btn-outline" onclick="guestLogin()" style="font-size:13px;">الدخول كزائر (لن يتم حفظ تقدمك)</button> 
+    </div> <button onclick="document.getElementById('auth-overlay').style.display='none'" id="btn-close-auth" style="display:none; width:100%; margin-top:10px; background:#eee; border:none; padding:10px; border-radius:10px; cursor:pointer;">إغلاق النافذة</button> 
+   </div> 
+  </div> 
   <div id="update-banner"> <span id="update-msg"></span> <a id="update-link" href="#" target="_blank">تحديث</a> 
   </div> 
   <div id="global-loader"> 
@@ -234,23 +217,20 @@
   <audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"></audio> 
   <audio id="sound-beep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio> 
   <audio id="sound-go" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio> 
-  
   <div class="container" id="main-container" style="display:none;"> 
    <div id="page-home"> 
     <div class="header-brand"> 
      <img id="disp-logo" src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png"> 
      <h1 id="disp-title">منصة لغتي هويتي</h1> 
-     <div id="disp-subtitle" style="color: #7f8c8d; margin-top:5px; line-height:1.6;">مرحباً بك يا بطل!</div> 
+     <div id="disp-subtitle" style="color: #7f8c8d; margin-top:5px; line-height:1.6;">
+      مرحباً بك يا بطل!
+     </div> 
     </div> 
     <div class="social-bar"> <a id="link-tele" onclick="openLink(this)"><i class="fab fa-telegram"></i></a> <a id="link-tiktok" onclick="openLink(this)"><i class="fab fa-tiktok"></i></a> <a id="link-wa" onclick="openLink(this)" style="color:#25d366;"><i class="fab fa-whatsapp"></i></a> <a id="link-face" onclick="openLink(this)" style="color:#1877f2;"><i class="fab fa-facebook"></i></a> 
     </div> 
-    
-    <div style="background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px;"> 
-     <label style="font-size:14px;"><b>بيانات الطالب:</b></label> 
-     <input type="text" id="std-name" placeholder="اسمك الثلاثي"> 
-     <select id="std-grade"> <option value="">-- اختر صفك --</option> <optgroup label="ابتدائي"><option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option></optgroup> <optgroup label="إعدادي"><option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option></optgroup> </select> 
+    <div style="background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px;"> <label style="font-size:14px;"><b>بيانات الطالب:</b></label> 
+     <input type="text" id="std-name" placeholder="اسمك الثلاثي"> <select id="std-grade"> <option value="">-- اختر صفك --</option> <optgroup label="ابتدائي"><option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option></optgroup> <optgroup label="إعدادي"><option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option></optgroup> </select> 
     </div> 
-    
     <div class="grid-cards"> 
      <div class="card" onclick="openSection('grammar')"> <i class="fas fa-magic"></i><b>النحو</b> 
      </div> 
@@ -261,8 +241,10 @@
      <div class="card" onclick="openVideos()"> <i class="fas fa-video"></i><b>الفيديو</b> 
      </div> 
     </div> 
+    <div id="guest-login-area"> <i class="fas fa-user-lock" style="font-size:30px; color:#64748b; margin-bottom:10px;"></i> 
+     <h3 style="margin:5px 0 10px; font-size:16px;">تريد حفظ درجاتك ومتابعة مستواك؟</h3> <button class="btn btn-main" onclick="openAuthModalAgain()" style="max-width:250px; margin:0 auto;"> تسجيل دخول / حساب جديد </button> 
+    </div> 
    </div> 
-   
    <div id="page-periods" style="display: none;"> 
     <h2 id="period-title" style="text-align: center; color: var(--main); margin-bottom:20px;"></h2> 
     <div class="grid-cards"> 
@@ -275,7 +257,6 @@
     </div> 
     <div id="month-grid" class="grid-cards"></div> <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
    </div> 
-   
    <div id="page-quiz" style="display: none;"> 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:15px;"> <button class="btn-outline" style="width:auto; padding:5px 12px; font-size:13px;" onclick="location.reload()">خروج</button> <span id="q-count" style="font-weight: bold; color: var(--main); font-size:14px;"></span> <span id="q-timer">30</span> 
     </div> 
@@ -290,17 +271,14 @@
      <p id="rule-text" style="margin:5px 0 0; font-size:13px;"></p> 
     </div> <button id="btn-next" class="btn btn-main" style="display: none; margin-top: 20px;">التالي <i class="fas fa-chevron-left"></i></button> 
    </div> 
-   
    <div id="page-library" style="display: none;"> 
     <h2 style="text-align: center; color: var(--main);">المكتبة 📚</h2> 
     <div id="lib-content"></div> <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
    </div> 
-   
    <div id="page-videos" style="display: none;"> 
     <h2 style="text-align: center; color: var(--video);">الفيديوهات 🎬</h2> 
     <div id="vid-content"></div> <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
    </div> 
-   
    <div id="page-result" style="display: none; text-align: center;"> 
     <h2 id="res-score" style="font-size: 30px; color: var(--main);"></h2> 
     <div id="certificate" style="border: 10px double #d4af37; padding: 30px 15px; background: #fff; margin: 20px 0; border-radius: 10px;"> 
@@ -311,7 +289,6 @@
     </div> <button class="btn btn-main" onclick="window.print()">طباعة</button> <button class="btn btn-outline" onclick="location.reload()">الرئيسية</button> 
    </div> 
   </div> 
-  
   <div id="modal-view" class="modal"> 
    <div class="modal-content"> <span onclick="document.getElementById('modal-view').style.display='none'" style="float:left; cursor:pointer; font-size:35px; color:#999;">×</span> 
     <h2 id="view-tit" style="font-size:1.2rem;"></h2> 
@@ -319,9 +296,7 @@
     <img id="view-img" style="display:none; width:100%; margin-top:15px; border-radius:10px;"> 
    </div> 
   </div> 
-  
   <script>
-        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCgpj7MLByWpTVUE2Tg3DQ0pwsUjLhAyEM",
             authDomain: "ahmedead-5185c.firebaseapp.com",
@@ -331,7 +306,6 @@
             appId: "1:559908876854:web:e8e7c151e984dc13219e97"
         };
 
-        // تهيئة Firebase
         let db, auth;
         try {
             firebase.initializeApp(firebaseConfig);
@@ -339,15 +313,12 @@
             auth = firebase.auth();
         } catch(e) { console.error("Firebase Error", e); }
 
-        let currentUser = null; // متغير لتخزين بيانات المستخدم
+        let currentUser = null; 
 
-        // دوال المساعدة للودر
         function showLoader() { document.getElementById('global-loader').style.display = 'flex'; }
         function hideLoader() { document.getElementById('global-loader').style.display = 'none'; }
 
-        // --- نظام تسجيل الدخول ---
-
-        // تبديل التبويبات (دخول / تسجيل)
+        // --- AUTH SYSTEM ---
         function switchAuth(type) {
             document.querySelectorAll('.auth-tabs button').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
@@ -360,7 +331,6 @@
             }
         }
 
-        // إنشاء حساب جديد
         function userRegister() {
             const name = document.getElementById('reg-name').value;
             const grade = document.getElementById('reg-grade').value;
@@ -371,7 +341,6 @@
 
             showLoader();
             auth.createUserWithEmailAndPassword(email, pass).then((cred) => {
-                // حفظ بيانات الطالب في Firestore
                 return db.collection('users').doc(cred.user.uid).set({
                     name: name,
                     grade: grade,
@@ -379,7 +348,6 @@
                     joinDate: new Date().toISOString()
                 });
             }).then(() => {
-                // سيتم التوجيه تلقائياً عبر onAuthStateChanged
                 Swal.fire({icon: 'success', title: 'تم إنشاء الحساب', text: 'أهلاً بك في عائلتنا!', timer: 1500, showConfirmButton: false});
             }).catch((error) => {
                 hideLoader();
@@ -390,142 +358,91 @@
             });
         }
 
-        // تسجيل الدخول
         function userLogin() {
             const email = document.getElementById('log-email').value;
             const pass = document.getElementById('log-pass').value;
-            
             showLoader();
-            auth.signInWithEmailAndPassword(email, pass).then(() => {
-                // سيتم التوجيه تلقائياً
-            }).catch((error) => {
+            auth.signInWithEmailAndPassword(email, pass).then(() => {}).catch((error) => {
                 hideLoader();
                 Swal.fire('خطأ', 'تأكد من البريد الإلكتروني وكلمة المرور', 'error');
             });
         }
 
-        // الدخول كزائر
         function guestLogin() {
             document.getElementById('auth-overlay').style.display = 'none';
             document.getElementById('main-container').style.display = 'block';
-            // لا نخفي اللودر هنا حتى تكتمل عملية تحميل الإعدادات في الأسفل
+            document.getElementById('guest-login-area').style.display = 'block'; // إظهار زر التسجيل في الأسفل
+            document.getElementById('btn-close-auth').style.display = 'block'; // تفعيل زر الإغلاق عند الفتح مرة أخرى
             
-            Swal.fire({
-                icon: 'info',
-                title: 'دخول زائر',
-                text: 'لن يتم حفظ تقدمك بشكل دائم إلا بإنشاء حساب',
-                timer: 3000,
-                showConfirmButton: false
-            });
+            Swal.fire({ icon: 'info', title: 'دخول زائر', text: 'لن يتم حفظ تقدمك بشكل دائم إلا بإنشاء حساب', timer: 3000, showConfirmButton: false });
         }
 
-        // تسجيل الخروج
+        function openAuthModalAgain() {
+            document.getElementById('auth-overlay').style.display = 'flex';
+        }
+
         function logout() {
-            Swal.fire({
-                title: 'تسجيل خروج؟',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'نعم',
-                cancelButtonText: 'لا'
-            }).then((res) => {
-                if(res.isConfirmed) {
-                    auth.signOut().then(() => location.reload());
-                }
-            });
+            Swal.fire({ title: 'تسجيل خروج؟', icon: 'question', showCancelButton: true, confirmButtonText: 'نعم', cancelButtonText: 'لا'
+            }).then((res) => { if(res.isConfirmed) { auth.signOut().then(() => location.reload()); } });
         }
 
-        // --- بدء التطبيق ---
+        // --- INIT ---
         document.addEventListener("DOMContentLoaded", () => {
             if(!db) return;
 
-            // مراقبة حالة المستخدم
             auth.onAuthStateChanged((user) => {
                 if (user) {
-                    // المستخدم مسجل دخول
                     currentUser = user;
                     document.getElementById('auth-overlay').style.display = 'none';
                     document.getElementById('main-container').style.display = 'block';
+                    document.getElementById('guest-login-area').style.display = 'none'; // إخفاء زر تسجيل الزوار
                     
-                    // جلب بياناته
                     db.collection('users').doc(user.uid).get().then((doc) => {
                         hideLoader();
                         if(doc.exists) {
                             const data = doc.data();
                             document.getElementById('std-name').value = data.name;
                             document.getElementById('std-grade').value = data.grade;
-                            
-                            // قفل الحقول
                             document.getElementById('std-name').readOnly = true;
                             document.getElementById('std-name').style.background = "#eef";
                             document.getElementById('std-grade').disabled = true;
-
-                            // رسالة الترحيب وزر الخروج
-                            document.getElementById('disp-subtitle').innerHTML = `
-                                أهلاً بك يا بطل <span style="color:var(--main); font-weight:bold">${data.name}</span><br>
-                                <button onclick="logout()" class="btn-outline" style="display:inline-block; width:auto; padding:2px 8px; font-size:12px; margin-top:5px; border-color:#e74c3c; color:#e74c3c;">
-                                    <i class="fas fa-sign-out-alt"></i> تسجيل خروج
-                                </button>
-                            `;
+                            document.getElementById('disp-subtitle').innerHTML = `أهلاً بك يا بطل <span style="color:var(--main); font-weight:bold">${data.name}</span><br><button onclick="logout()" class="btn-outline" style="display:inline-block; width:auto; padding:2px 8px; font-size:12px; margin-top:5px; border-color:#e74c3c; color:#e74c3c;"><i class="fas fa-sign-out-alt"></i> خروج</button>`;
                         }
                     });
                 } else {
-                    // غير مسجل -> أظهر شاشة الدخول واخف اللودر المبدئي
-                    hideLoader(); 
-                    // (اللودر سيظهر مرة أخرى عند ضغط أزرار الدخول)
+                    hideLoader();
+                    // Auth overlay shows automatically by CSS/HTML structure initial state
                 }
             });
 
-            // جلب روابط التحديث والإعدادات
             db.collection("settings").doc("app_config").get().then(doc => {
                 if(doc.exists) {
                     const data = doc.data();
                     if(data.download_url) document.getElementById('update-link').href = data.download_url;
-                    if(data.show_banner) {
-                        document.getElementById('update-banner').style.display = 'block';
-                        document.getElementById('update-msg').innerText = data.update_msg || "تحديث جديد!";
-                    }
+                    if(data.show_banner) { document.getElementById('update-banner').style.display = 'block'; document.getElementById('update-msg').innerText = data.update_msg || "تحديث جديد!"; }
                 }
             }).catch(()=>{});
 
             db.collection("settings").doc("site_info").get().then(doc => {
-                let welcomeMsg = "أهلاً بك يا بطل";
                 if(doc.exists) {
                     const info = doc.data();
                     if(info.title) { document.title = info.title; document.getElementById('disp-title').innerText = info.title; }
-                    if(info.subtitle && !currentUser) { // فقط لو لم يكن مسجلاً، نغير الرسالة. لو مسجل ستتغير في AuthChanged
+                    if(info.subtitle && !currentUser) {
                         document.getElementById('disp-subtitle').innerText = info.subtitle;
                         const teacherName = info.subtitle.includes('مع') ? info.subtitle.split('مع')[1] : "الأستاذ";
                         document.getElementById('cert-teacher-txt').innerText = `يمنح ${teacherName} هذه الشهادة للطالب/ة:`;
                     }
                     if(info.logo) document.getElementById('disp-logo').src = info.logo;
-                    
-                    // روابط السوشيال
-                    const setLink = (id, url) => {
-                        const el = document.getElementById(id);
-                        if(url) {
-                            if(id === 'link-wa' && !url.includes('http')) url = `https://wa.me/20${url.replace(/^0+/, '')}`;
-                            el.setAttribute('data-url', url);
-                            el.style.display = 'inline-block';
-                        }
-                    };
-                    setLink('link-wa', info.wa); setLink('link-tele', info.tele);
-                    setLink('link-face', info.face); setLink('link-tiktok', info.tiktok);
+                    const setLink = (id, url) => { const el = document.getElementById(id); if(url) { if(id === 'link-wa' && !url.includes('http')) url = `https://wa.me/20${url.replace(/^0+/, '')}`; el.setAttribute('data-url', url); el.style.display = 'inline-block'; } };
+                    setLink('link-wa', info.wa); setLink('link-tele', info.tele); setLink('link-face', info.face); setLink('link-tiktok', info.tiktok);
                 }
             }).catch(()=>{});
         });
 
-        function openLink(el) {
-            const url = el.getAttribute('data-url');
-            if(url) window.open(url, '_system');
-        }
+        function openLink(el) { const url = el.getAttribute('data-url'); if(url) window.open(url, '_system'); }
+        function goBack(id) { document.querySelectorAll('.container > div').forEach(d => d.style.display = 'none'); document.getElementById(id).style.display = 'block'; window.scrollTo(0,0); }
 
-        function goBack(id) {
-            document.querySelectorAll('.container > div').forEach(d => d.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            window.scrollTo(0,0);
-        }
-
-        // --- منطق الاختبارات والمحتوى ---
+        // --- QUIZ LOGIC ---
         let questions = [], curIdx = 0, score = 0, timer, timeLeft = 30, currentSection = '';
         const months = ["أكتوبر", "نوفمبر", "ديسمبر", "فبراير", "مارس", "أبريل"];
         const gradeNames = { "4": "رابع ابتدائي", "5": "خامس ابتدائي", "6": "سادس ابتدائي", "7": "أول إعدادي", "8": "ثاني إعدادي", "9": "ثالث إعدادي" };
@@ -551,7 +468,6 @@
                 hideLoader();
                 if(!questions.length) return Swal.fire('تنبيه', 'لا توجد أسئلة حالياً لهذا القسم', 'info');
                 curIdx = 0; score = 0;
-                
                 document.getElementById('countdown-overlay').style.display = 'flex';
                 let count = 3;
                 const txt = document.getElementById('countdown-text');
@@ -565,11 +481,7 @@
                     }
                     count--;
                 }, 1000);
-            }).catch((err) => { 
-                hideLoader(); 
-                console.log(err);
-                Swal.fire('خطأ', 'تأكد من اتصالك بالإنترنت', 'error'); 
-            });
+            }).catch((err) => { hideLoader(); Swal.fire('خطأ', 'تأكد من اتصالك بالإنترنت', 'error'); });
         }
 
         function showQuestion() {
@@ -609,21 +521,14 @@
             const percentage = (score / questions.length) * 100;
             document.getElementById('res-score').innerText = `الدرجة: ${score} من ${questions.length}`;
             
-            // تجهيز كائن النتيجة
             let resultData = {
                 name: document.getElementById('std-name').value,
                 grade: document.getElementById('std-grade').value,
-                score: score, 
-                total: questions.length,
+                score: score, total: questions.length,
                 date: new Date().toISOString(),
                 examType: document.getElementById('period-title').innerText
             };
-
-            // ربط النتيجة بـ UID إذا كان الطالب مسجلاً
-            if(currentUser) {
-                resultData.uid = currentUser.uid;
-            }
-
+            if(currentUser) resultData.uid = currentUser.uid;
             db.collection("results").add(resultData).catch(e=>{});
             
             if(percentage >= 70) {
@@ -637,8 +542,7 @@
             showLoader();
             goBack('page-library');
             db.collection("lessons").get().then(snap => {
-                const container = document.getElementById('lib-content');
-                container.innerHTML = '';
+                const container = document.getElementById('lib-content'); container.innerHTML = '';
                 let grps = {};
                 snap.forEach(d => { const l = d.data(); if(!grps[l.grade]) grps[l.grade] = []; grps[l.grade].push(l); });
                 if(Object.keys(grps).length === 0) container.innerHTML = '<p style="text-align:center">المكتبة فارغة حالياً</p>';
@@ -648,13 +552,7 @@
                     grps[g].forEach(lesson => {
                         let card = document.createElement('div'); card.className = 'lesson-card';
                         card.innerHTML = `<div class="lesson-info"><div class="lesson-icon-box"><i class="fas fa-book"></i></div><div class="lesson-text"><h4>${lesson.title}</h4><span>اقرأ الدرس</span></div></div><div class="lesson-btn"><i class="fas fa-chevron-left"></i></div>`;
-                        card.onclick = () => {
-                            document.getElementById('view-tit').innerText = lesson.title;
-                            document.getElementById('view-bod').innerText = lesson.body;
-                            const imgElem = document.getElementById('view-img');
-                            if(lesson.img) { imgElem.src = lesson.img; imgElem.style.display = 'block'; } else { imgElem.style.display = 'none'; }
-                            document.getElementById('modal-view').style.display = 'flex';
-                        };
+                        card.onclick = () => { document.getElementById('view-tit').innerText = lesson.title; document.getElementById('view-bod').innerText = lesson.body; const imgElem = document.getElementById('view-img'); if(lesson.img) { imgElem.src = lesson.img; imgElem.style.display = 'block'; } else { imgElem.style.display = 'none'; } document.getElementById('modal-view').style.display = 'flex'; };
                         div.appendChild(card);
                     });
                     container.appendChild(div);
@@ -669,22 +567,14 @@
                 document.getElementById('vid-content').innerHTML = '';
                 snap.forEach(doc => {
                     const v = doc.data();
-                    let link = v.url.includes('youtube') || v.url.includes('youtu.be') ? 
-                        `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${v.url.split('v=')[1] || v.url.split('/').pop()}" frameborder="0" allowfullscreen style="border-radius:15px;"></iframe>` : 
-                        `<a onclick="window.open('${v.url}', '_system')" class="btn btn-video">مشاهدة الفيديو</a>`;
+                    let link = v.url.includes('youtube') || v.url.includes('youtu.be') ? `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${v.url.split('v=')[1] || v.url.split('/').pop()}" frameborder="0" allowfullscreen style="border-radius:15px;"></iframe>` : `<a onclick="window.open('${v.url}', '_system')" class="btn btn-video">مشاهدة الفيديو</a>`;
                     document.getElementById('vid-content').innerHTML += `<div class="grade-group" style="padding:15px; background:white; border-radius:15px; margin-bottom:15px;"><h3 style="margin-top:0; font-size:16px;">${v.title} (${gradeNames[v.grade]})</h3>${link}</div>`;
                 });
             }).catch(e=>{ hideLoader(); }).finally(()=>hideLoader());
         }
 
-        // كود خاص لمنع إغلاق التطبيق عند الرجوع في الهواتف
-        document.addEventListener("backbutton", function(e){
-            if(document.getElementById('page-home').style.display === 'block'){
-                e.preventDefault();
-            } else {
-                goBack('page-home');
-            }
-        }, false);
+        document.addEventListener("backbutton", function(e){ if(document.getElementById('page-home').style.display === 'block'){ e.preventDefault(); } else { goBack('page-home'); } }, false);
     </script> 
  
 </body></html>
+
