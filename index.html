@@ -24,19 +24,16 @@
         * { box-sizing: border-box; transition: 0.3s; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden; user-select: none; }
 
-        /* اللودر */
         #global-loader { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 1); z-index: 20000; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--main); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* شاشة الدخول */
         #auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f4f7f6; z-index: 15000; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .auth-box { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; animation: fadeInDown 0.5s; }
         .auth-tabs { display: flex; background: #f1f5f9; padding: 5px; border-radius: 15px; margin-bottom: 20px; }
         .auth-tabs button { flex: 1; padding: 10px; border: none; background: none; border-radius: 10px; font-weight: bold; color: #64748b; cursor: pointer; }
         .auth-tabs button.active { background: white; color: var(--main); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-        /* الحاوية والعناصر */
         .container { width: 100%; max-width: 800px; background: var(--white); min-height: 100vh; padding: 20px; margin: 0 auto; padding-bottom: 80px; }
         @media (min-width: 768px) { .container { border-radius: 30px; margin: 20px auto; min-height: auto; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); } }
 
@@ -63,7 +60,6 @@
         .card i { font-size: 28px; margin-bottom: 8px; display: block; color: var(--main); }
         .card b { display: block; font-size: 0.95rem; color: #333; }
 
-        /* Post Card (New Feature) */
         .post-card { background: white; border: 1px solid #eee; border-radius: 15px; margin-bottom: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
         .post-header { padding: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f9f9f9; }
         .post-avatar { width: 40px; height: 40px; background: #e67e22; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; }
@@ -74,13 +70,11 @@
         .post-actions { padding: 10px 15px; border-top: 1px solid #eee; display: flex; gap: 10px; color: #666; font-size: 13px; }
         .comment-box { padding: 10px; background: #fafafa; display: none; }
 
-        /* البروفايل */
         .profile-header { text-align: center; background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 20px; border-radius: 20px; margin-bottom: 20px; position: relative; }
         .avatar-circle { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 35px; color: var(--main); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .stats-row { display: flex; justify-content: space-around; margin-top: 15px; }
         .stat-val { display: block; font-size: 1.2rem; font-weight: 900; color: var(--main); }
         
-        /* المكتبة */
         .lib-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .lib-item { background: white; border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px; border: 1px solid #eee; cursor: pointer; border-right: 4px solid var(--sec); }
         .lib-icon { width: 45px; height: 45px; background: #f0fdf4; border-radius: 12px; display: flex; justify-content: center; align-items: center; color: var(--sec); font-size: 20px; }
@@ -88,63 +82,78 @@
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; justify-content: center; align-items: center; padding: 15px; }
         .modal-content { background: white; width: 100%; max-width: 700px; border-radius: 20px; padding: 20px; max-height: 90vh; overflow-y: auto; }
-        
-        #guest-form-area { display: none; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }
     </style> 
  </head> 
  <body> 
+  <div id="global-loader"><div class="spinner"></div></div> 
+
   <div id="auth-overlay"> 
    <div class="auth-box animate__animated animate__fadeInDown"> 
     <img src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png" width="80" style="margin-bottom:15px"> 
     <h2 style="color:var(--main); margin:0 0 20px; font-size:1.5rem;">منصة لغتي هويتي</h2> 
-    <div class="auth-tabs"> <button class="active" onclick="switchAuth('login')">دخول</button> <button onclick="switchAuth('register')">حساب جديد</button> 
+    <div class="auth-tabs"> 
+        <button class="active" onclick="switchAuth('login')">دخول</button> 
+        <button onclick="switchAuth('register')">حساب جديد</button> 
     </div> 
     <div id="form-login"> 
      <input type="email" id="log-email" placeholder="البريد الإلكتروني"> 
      <input type="password" id="log-pass" placeholder="كلمة المرور"> <button class="btn btn-main" onclick="userLogin()">تسجيل دخول</button> 
     </div> 
     <div id="form-register" style="display:none;"> 
-     <input type="text" id="reg-name" placeholder="اسمك الثلاثي"> <select id="reg-grade"> <option value="">-- اختر صفك --</option> <optgroup label="ابتدائي"><option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option></optgroup> <optgroup label="إعدادي"><option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option></optgroup> </select> 
+     <input type="text" id="reg-name" placeholder="اسمك الثلاثي"> 
+     <select id="reg-grade"> 
+        <option value="">-- اختر صفك --</option> 
+        <optgroup label="ابتدائي"><option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option></optgroup> 
+        <optgroup label="إعدادي"><option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option></optgroup> 
+     </select> 
      <input type="email" id="reg-email" placeholder="البريد الإلكتروني"> 
      <input type="password" id="reg-pass" placeholder="كلمة المرور"> <button class="btn btn-sec" onclick="userRegister()">إنشاء حساب</button> 
     </div> 
-    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;"> <button class="btn btn-outline" onclick="showGuestForm()">الدخول كزائر</button> 
+    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;"> 
+        <button class="btn btn-outline" onclick="showGuestForm()">الدخول كزائر</button> 
     </div> 
-    <div id="guest-form-area" class="animate__animated animate__fadeIn"> 
+    <div id="guest-form-area" style="display:none;" class="animate__animated animate__fadeIn"> 
      <h4 style="margin:0 0 10px; color:#555;">بيانات الزائر (للشهادة)</h4> 
-     <input type="text" id="guest-name" placeholder="اسمك الثلاثي"> <select id="guest-grade"> <option value="">-- اختر صفك --</option> <option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option> <option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option> </select> <button class="btn btn-main" onclick="guestLoginConfirm()">دخول الآن</button> 
+     <input type="text" id="guest-name" placeholder="اسمك الثلاثي"> 
+     <select id="guest-grade"> 
+        <option value="">-- اختر صفك --</option> 
+        <option value="4">4 ابتدائي</option><option value="5">5 ابتدائي</option><option value="6">6 ابتدائي</option> 
+        <option value="7">1 إعدادي</option><option value="8">2 إعدادي</option><option value="9">3 إعدادي</option> 
+     </select> 
+     <button class="btn btn-main" onclick="guestLoginConfirm()">دخول الآن</button> 
     </div> 
    </div> 
   </div> 
 
-  <div id="global-loader"> <div class="spinner"></div> </div> 
   <audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio> 
   <audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"></audio> 
-  
+
   <div class="container" id="main-container" style="display:none;"> 
+   
    <div id="page-home"> 
     <div class="header-brand"> 
      <img id="disp-logo" src="https://cdn-icons-png.flaticon.com/512/3426/3426653.png"> 
      <h1 id="disp-title">منصة لغتي هويتي</h1> 
      <div id="disp-desc" style="color: #636e72; font-size: 14px; margin-top: 10px; white-space: pre-line;"></div> 
     </div> 
-    <div class="social-bar"> <a id="link-tele" onclick="openLink(this)"><i class="fab fa-telegram"></i></a> <a id="link-tiktok" onclick="openLink(this)"><i class="fab fa-tiktok"></i></a> <a id="link-wa" onclick="openLink(this)" style="color:#25d366;"><i class="fab fa-whatsapp"></i></a> <a id="link-face" onclick="openLink(this)" style="color:#1877f2;"><i class="fab fa-facebook"></i></a> 
+    <div class="social-bar"> 
+        <a id="link-tele" onclick="openLink(this)"><i class="fab fa-telegram"></i></a> 
+        <a id="link-tiktok" onclick="openLink(this)"><i class="fab fa-tiktok"></i></a> 
+        <a id="link-wa" onclick="openLink(this)" style="color:#25d366;"><i class="fab fa-whatsapp"></i></a> 
+        <a id="link-face" onclick="openLink(this)" style="color:#1877f2;"><i class="fab fa-facebook"></i></a> 
     </div> 
-    
     <div style="background: #fff; padding: 15px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px;"> 
      <div style="display:flex; justify-content:space-between; align-items:center;"> 
       <div style="display:flex; align-items:center; gap:10px;"> 
-       <div style="width:40px; height:40px; background:#e0f2fe; border-radius:50%; display:flex; justify-content:center; align-items:center; color:var(--main);"> <i class="fas fa-user"></i> </div> 
+       <div style="width:40px; height:40px; background:#e0f2fe; border-radius:50%; display:flex; justify-content:center; align-items:center; color:var(--main);"><i class="fas fa-user"></i></div> 
        <div> <b id="home-name-disp">زائر</b> <span id="home-grade-disp" style="display:block; font-size:12px; color:#888;">--</span> </div> 
       </div> <button class="btn btn-outline" style="width:auto; padding:5px 15px; font-size:12px; margin:0;" onclick="openProfile()">ملفي <i class="fas fa-chevron-left"></i></button> 
      </div> 
     </div> 
-
-    <div class="card" onclick="openPostsPage()" style="margin-bottom:20px; border-bottom-color: #e67e22; background: #fff8f0; grid-column: span 2;">
-        <i class="fas fa-bullhorn" style="color: #e67e22;"></i> <b>منشورات المعلم</b>
-        <p style="margin:5px 0 0; font-size:12px; color:#777;">تابع التحديثات والأنشطة الإضافية</p>
-    </div>
-
+    <div class="card" onclick="openPostsPage()" style="margin-bottom:20px; border-bottom-color: #e67e22; background: #fff8f0; grid-column: span 2;"> 
+        <i class="fas fa-bullhorn" style="color: #e67e22;"></i> <b>منشورات المعلم</b> 
+        <p style="margin:5px 0 0; font-size:12px; color:#777;">تابع التحديثات والأنشطة الإضافية</p> 
+    </div> 
     <div class="grid-cards"> 
      <div class="card" onclick="openSection('grammar')"> <i class="fas fa-magic"></i><b>النحو</b> </div> 
      <div class="card" onclick="openSection('vocab')"> <i class="fas fa-language"></i><b>المفردات</b> </div> 
@@ -154,20 +163,24 @@
     </div> 
    </div> 
 
-   <div id="page-posts" style="display:none;">
-       <h2 style="text-align:center; color:#e67e22;">📢 منشورات المعلم</h2>
-       <div id="posts-container" style="padding-bottom:20px;"></div>
-       <button class="btn btn-outline" onclick="goBack('page-home')">عودة للرئيسية</button>
-   </div>
+   <div id="page-posts" style="display:none;"> 
+    <h2 style="text-align:center; color:#e67e22;">📢 منشورات المعلم</h2> 
+    <div id="posts-container" style="padding-bottom:20px;"></div> 
+    <button class="btn btn-outline" onclick="goBack('page-home')">عودة للرئيسية</button> 
+   </div> 
 
    <div id="page-profile" style="display:none;"> 
     <h2 style="text-align:center; color:var(--main);">الملف الشخصي 👤</h2> 
     <div class="profile-header"> 
      <button onclick="toggleEditMode()" style="position:absolute; left:15px; top:15px; background:white; border:none; width:30px; height:30px; border-radius:50%;"><i class="fas fa-pen"></i></button> 
-     <div class="avatar-circle"> <i class="fas fa-user-graduate"></i> </div> 
-     <div id="view-mode"> <h3 id="prof-name"></h3> <span id="prof-grade" style="background:white; padding:3px 10px; border-radius:10px; font-size:12px; color:#666;"></span> </div> 
+     <div class="avatar-circle"><i class="fas fa-user-graduate"></i></div> 
+     <div id="view-mode"> 
+      <h3 id="prof-name"></h3> <span id="prof-grade" style="background:white; padding:3px 10px; border-radius:10px; font-size:12px; color:#666;"></span> 
+     </div> 
      <div id="edit-mode" style="display:none; margin-top:10px;"> 
-      <input type="text" id="edit-name" placeholder="الاسم"> <select id="edit-grade"> <option value="4">4</option><option value="5">5</option><option value="6">6</option> <option value="7">7</option><option value="8">8</option><option value="9">9</option> </select> <button class="btn btn-main" style="padding:5px;" onclick="saveProfileData()">حفظ</button> 
+      <input type="text" id="edit-name" placeholder="الاسم"> 
+      <select id="edit-grade"> <option value="4">4</option><option value="5">5</option><option value="6">6</option> <option value="7">7</option><option value="8">8</option><option value="9">9</option> </select> 
+      <button class="btn btn-main" style="padding:5px;" onclick="saveProfileData()">حفظ</button> 
      </div> 
      <div class="stats-row"> 
       <div class="stat-item"> <span class="stat-val" id="st-exams">0</span><span>اختبارات</span> </div> 
@@ -180,7 +193,10 @@
     <h3 style="font-size:16px;">💬 مراسلة المعلم:</h3> 
     <div style="background:#fff; border:1px solid #eee; border-radius:15px; padding:10px;"> 
      <div id="chat-messages" style="height:200px; overflow-y:auto; border-bottom:1px solid #eee; margin-bottom:10px; display:flex; flex-direction:column; gap:8px;"></div> 
-     <div style="display:flex; gap:5px;"> <input type="text" id="msg-input" placeholder="رسالتك..." style="margin:0;"> <button onclick="sendPrivateMessage()" style="width:50px; background:var(--main); color:white; border:none; border-radius:12px;"><i class="fas fa-paper-plane"></i></button> </div> 
+     <div style="display:flex; gap:5px;"> 
+      <input type="text" id="msg-input" placeholder="رسالتك..." style="margin:0;"> 
+      <button onclick="sendPrivateMessage()" style="width:50px; background:var(--main); color:white; border:none; border-radius:12px;"><i class="fas fa-paper-plane"></i></button> 
+     </div> 
     </div> 
     <button class="btn btn-outline" onclick="goBack('page-home')" style="margin-top:20px;">عودة</button> 
     <button class="btn btn-outline" onclick="auth.signOut().then(()=>location.reload())" style="color:var(--err); border-color:var(--err);">خروج</button> 
@@ -195,55 +211,78 @@
      <div class="card" onclick="openExamCategory('ترم2')"> <i class="fas fa-book-open"></i><b>ترم 2</b> </div> 
     </div> 
     <h3 style="margin:10px 0; font-size:15px;">اختر الشهر:</h3> 
-    <div id="month-grid" class="grid-cards"></div> <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
+    <div id="month-grid" class="grid-cards"></div> 
+    <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
    </div> 
+
    <div id="page-exam-list" style="display:none;"> 
     <h3 id="exam-list-title" style="text-align:center; color:var(--main);"></h3> 
     <div id="exams-container" style="display:flex; flex-direction:column; gap:10px;"></div> 
-    <p id="no-exams-msg" style="text-align:center; display:none; color:#888;">لا توجد اختبارات.</p> <button class="btn btn-outline" onclick="goBack('page-periods')" style="margin-top:20px;">رجوع</button> 
+    <p id="no-exams-msg" style="text-align:center; display:none; color:#888;">لا توجد اختبارات.</p> 
+    <button class="btn btn-outline" onclick="goBack('page-periods')" style="margin-top:20px;">رجوع</button> 
    </div> 
+
    <div id="page-quiz" style="display: none;"> 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:15px;"> 
         <button class="btn-outline" style="width:auto; padding:5px 12px; font-size:13px;" onclick="location.reload()">خروج</button> 
-        <span id="q-count" style="font-weight: bold; color: var(--main);"></span> <span id="q-timer" style="font-size:24px; font-weight:900; color:#e74c3c;">30</span> 
+        <span id="q-count" style="font-weight: bold; color: var(--main);"></span> 
+        <span id="q-timer" style="font-size:24px; font-weight:900; color:#e74c3c;">30</span> 
     </div> 
-    <div style="width:100%; height:8px; background:#eee; border-radius:10px; margin: 15px 0; overflow:hidden;"> <div id="timer-bar" style="width:100%; height:100%; background:var(--main); transition:1s linear;"></div> </div> 
-    <div id="q-box" style="background:#f8fafc; padding:20px; border-radius:15px; text-align:center; margin-bottom:15px; border:1px solid #e2e8f0;"> <h3 id="q-text" style="margin:0; font-size:1.1rem; line-height:1.6;"></h3> </div> 
-    <div id="q-options" style="display: grid; grid-template-columns: 1fr; gap: 10px;"></div> <button id="btn-next" class="btn btn-main" style="display: none; margin-top: 20px;">التالي</button> 
+    <div style="width:100%; height:8px; background:#eee; border-radius:10px; margin: 15px 0; overflow:hidden;"> 
+     <div id="timer-bar" style="width:100%; height:100%; background:var(--main); transition:1s linear;"></div> 
+    </div> 
+    <div id="q-box" style="background:#f8fafc; padding:20px; border-radius:15px; text-align:center; margin-bottom:15px; border:1px solid #e2e8f0;"> 
+     <h3 id="q-text" style="margin:0; font-size:1.1rem; line-height:1.6;"></h3> 
+    </div> 
+    <div id="q-options" style="display: grid; grid-template-columns: 1fr; gap: 10px;"></div> 
+    <button id="btn-next" class="btn btn-main" style="display: none; margin-top: 20px;">التالي</button> 
    </div> 
-   
+
    <div id="page-library" style="display: none;"> 
     <h2 style="text-align: center; color: var(--main);">المكتبة 📚</h2> 
-    <div id="lib-content" class="lib-grid"></div> <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
+    <div id="lib-content" class="lib-grid"></div> 
+    <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
    </div> 
+
    <div id="page-videos" style="display: none;"> 
     <h2 style="text-align: center; color: var(--video);">الفيديوهات 🎬</h2> 
-    <div id="vid-content" class="lib-grid"></div> <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
+    <div id="vid-content" class="lib-grid"></div> 
+    <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
    </div> 
-   
+
    <div id="page-comments" style="display: none;"> 
     <h2 style="text-align: center; color: #9b59b6;">المجتمع العام 🌍</h2> 
-    <div style="background:white; padding:15px; border-radius:15px; margin-bottom:15px; border:1px solid #eee;"> <textarea id="pub-comment" rows="2" placeholder="شاركنا رأيك..."></textarea> <button class="btn btn-main" onclick="sendPublicComment()" style="margin-top:5px;">نشر</button> </div> 
-    <div id="pub-list"></div> <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
+    <div style="background:white; padding:15px; border-radius:15px; margin-bottom:15px; border:1px solid #eee;"> 
+        <textarea id="pub-comment" rows="2" placeholder="شاركنا رأيك..."></textarea> 
+        <button class="btn btn-main" onclick="sendPublicComment()" style="margin-top:5px;">نشر</button> 
+    </div> 
+    <div id="pub-list"></div> 
+    <button class="btn btn-outline" onclick="goBack('page-home')">عودة</button> 
    </div> 
-   
+
    <div id="page-result" style="display: none; text-align: center;"> 
     <h2 id="res-score" style="font-size: 30px; color: var(--main);"></h2> 
     <div id="certificate" style="border: 10px double #d4af37; padding: 30px 15px; background: #fff; margin: 20px 0; border-radius: 10px; display:none;"> 
-     <h1 style="color:#d4af37; margin:0;">شهادة تقدير</h1> <p>تمنح منصة لغتي هويتي هذه الشهادة للطالب/ة:</p> 
-     <h2 id="cert-name" style="border-bottom: 2px solid #d4af37; display: inline-block; padding: 0 20px; margin: 10px 0;"></h2> <p>لتفوقه في اللغة العربية</p> 
-    </div> <button class="btn btn-main" onclick="window.print()">طباعة</button> <button class="btn btn-outline" onclick="location.reload()">الرئيسية</button> 
+     <h1 style="color:#d4af37; margin:0;">شهادة تقدير</h1> 
+     <p>تمنح منصة لغتي هويتي هذه الشهادة للطالب/ة:</p> 
+     <h2 id="cert-name" style="border-bottom: 2px solid #d4af37; display: inline-block; padding: 0 20px; margin: 10px 0;"></h2> 
+     <p>لتفوقه في اللغة العربية</p> 
+    </div> 
+    <button class="btn btn-main" onclick="window.print()">طباعة</button> 
+    <button class="btn btn-outline" onclick="location.reload()">الرئيسية</button> 
    </div> 
 
    <div id="modal-view" class="modal"> 
-    <div class="modal-content"> <span onclick="document.getElementById('modal-view').style.display='none'" style="float:left; cursor:pointer; font-size:35px; color:#999;">×</span> 
+    <div class="modal-content"> 
+     <span onclick="document.getElementById('modal-view').style.display='none'" style="float:left; cursor:pointer; font-size:35px; color:#999;">×</span> 
      <h2 id="view-tit" style="font-size:1.2rem;"></h2> 
      <div id="view-bod" style="white-space: pre-wrap; font-size:15px; line-height:1.7;"></div> 
      <img id="view-img" style="display:none; width:100%; margin-top:15px; border-radius:10px;"> 
     </div> 
    </div> 
-   
+
    <script>
+        // تكوين فايربيز الخاص بك
         const firebaseConfig = {
             apiKey: "AIzaSyCgpj7MLByWpTVUE2Tg3DQ0pwsUjLhAyEM",
             authDomain: "ahmedead-5185c.firebaseapp.com",
@@ -307,7 +346,7 @@
         function openLink(el) { const url = el.getAttribute('data-url'); if(url) window.open(url, '_system'); }
         function goBack(id) { document.querySelectorAll('.container > div').forEach(d => d.style.display = 'none'); document.getElementById(id).style.display = 'block'; window.scrollTo(0,0); }
 
-        // --- NEW: TEACHER POSTS ---
+        // --- TEACHER POSTS ---
         function openPostsPage(){
             goBack('page-posts');
             const cont = document.getElementById('posts-container');
@@ -323,17 +362,13 @@
                             <div style="display:flex; align-items:center; gap:10px;">
                                 <i class="fas fa-file-alt" style="color:#e67e22; font-size:24px;"></i>
                                 <div><b>اضغط لبدء الاختبار</b><br><small style="color:#888;">اختبار مرفق</small></div>
-                            </div>
-                            <i class="fas fa-chevron-left" style="color:#aaa;"></i>
-                        </div>`;
+                            </div><i class="fas fa-chevron-left" style="color:#aaa;"></i></div>`;
                     } else if (p.attachType === 'lesson') {
                         attachHTML = `<div class="post-attachment" onclick="openLessonDirect('${p.attachId}')">
                             <div style="display:flex; align-items:center; gap:10px;">
                                 <i class="fas fa-book" style="color:#2ecc71; font-size:24px;"></i>
                                 <div><b>اضغط لقراءة الدرس</b><br><small style="color:#888;">درس مرفق</small></div>
-                            </div>
-                            <i class="fas fa-chevron-left" style="color:#aaa;"></i>
-                        </div>`;
+                            </div><i class="fas fa-chevron-left" style="color:#aaa;"></i></div>`;
                     }
 
                     cont.innerHTML += `
@@ -342,10 +377,7 @@
                             <div class="post-avatar"><i class="fas fa-user-tie"></i></div>
                             <div><b>المعلم</b><br><small style="color:#888">${new Date(p.date).toLocaleDateString('ar-EG')}</small></div>
                         </div>
-                        <div class="post-body">
-                            ${p.title ? `<h3 style="margin:0 0 8px; color:#222;">${p.title}</h3>` : ''}
-                            ${p.body}
-                        </div>
+                        <div class="post-body">${p.title ? `<h3 style="margin:0 0 8px; color:#222;">${p.title}</h3>` : ''}${p.body}</div>
                         ${p.img ? `<img src="${p.img}" class="post-img">` : ''}
                         ${attachHTML}
                         <div class="post-actions">
@@ -368,8 +400,9 @@
             box.style.display = 'block';
             db.collection('posts').doc(pid).collection('comments').orderBy('time').onSnapshot(snap=>{
                 document.getElementById(`clist-${pid}`).innerHTML = snap.docs.map(d=>`
-                    <div style="background:white; padding:5px 10px; border-radius:10px; margin-bottom:5px; font-size:13px;">
+                    <div style="background:white; padding:8px; border-radius:10px; margin-bottom:5px; font-size:13px; border:1px solid #eee;">
                         <b>${d.data().name}:</b> ${d.data().text}
+                        ${d.data().reply ? `<div style="background:#f0fdf4; border-right:3px solid #2ecc71; padding:5px; margin-top:5px; color:#27ae60;">👨‍🏫 <b>رد المعلم:</b> ${d.data().reply}</div>` : ''}
                     </div>
                 `).join('');
             });
@@ -405,20 +438,22 @@
         function openExamCategory(cat){
             goBack('page-exam-list'); document.getElementById('exam-list-title').innerText = `اختبارات: ${cat}`;
             const cont = document.getElementById('exams-container'); cont.innerHTML = '<div class="spinner" style="margin:auto;"></div>';
-            db.collection('exams').where('grade', '==', userData.grade).where('subject', '==', window.currentSubject).where('category', '==', cat).get().then(snap => {
+            
+            // تعديل ليشمل الامتحانات العامة (all) بالإضافة لصف الطالب
+            db.collection('exams').where('subject', '==', window.currentSubject).where('category', '==', cat).where('grade', 'in', [userData.grade, 'all']).get().then(snap => {
                   cont.innerHTML = '';
                   if(snap.empty) { document.getElementById('no-exams-msg').style.display='block'; return; }
                   document.getElementById('no-exams-msg').style.display='none';
                   snap.forEach(doc => {
                       const exam = doc.data();
                       const div = document.createElement('div'); div.className = 'exam-item animate__animated animate__fadeInRight';
-                      div.innerHTML = `<b>${exam.title}</b> <i class="fas fa-chevron-left" style="color:#ccc;"></i>`;
+                      div.innerHTML = `<div><b>${exam.title}</b> ${exam.grade === 'all' ? '<span style="font-size:10px; background:var(--err); color:white; padding:2px 5px; border-radius:5px; margin-right:5px;">عام</span>':''}</div> <i class="fas fa-chevron-left" style="color:#ccc;"></i>`;
                       div.onclick = () => startSpecificExam(doc.id, exam.title);
                       cont.appendChild(div);
                   });
             });
         }
-        function startExamDirect(eid) { // For Posts
+        function startExamDirect(eid) { 
             db.collection('exams').doc(eid).get().then(d => {
                 if(d.exists) startSpecificExam(eid, d.data().title);
                 else Swal.fire('خطأ', 'الاختبار غير موجود', 'error');
@@ -461,12 +496,11 @@
             if(percentage >= 70) { document.getElementById('certificate').style.display = 'block'; document.getElementById('cert-name').innerText = userData.name; confetti({ particleCount: 150, spread: 70 }); } else document.getElementById('certificate').style.display = 'none';
         }
 
-        // --- Library & Videos (UPDATED: Supports Global Content) ---
+        // --- Library & Videos ---
         function openLibrary() { showLoader(); goBack('page-library'); loadContent('lessons', 'lib-content', 'book', 'اقرأ الدرس'); }
         function openVideos() { showLoader(); goBack('page-videos'); loadContent('videos', 'vid-content', 'play-circle', 'شاهد الفيديو'); }
         function loadContent(coll, elemId, icon, actionTxt){
             const el = document.getElementById(elemId); el.innerHTML='<div class="spinner" style="margin:20px auto;"></div>';
-            // Query for Grade-Specific content OR Global content ('all')
             db.collection(coll).where('grade', 'in', [userData.grade, 'all']).get().then(snap => {
                 el.innerHTML='';
                 if(snap.empty) { el.innerHTML = '<p style="text-align:center">لا يوجد محتوى</p>'; return; }
@@ -495,7 +529,7 @@
                     return `<div style="background:#fff; padding:10px; border-radius:10px; margin-bottom:10px; border:1px solid #eee;">
                         <div style="font-size:12px; color:var(--main); font-weight:bold;">${c.name}</div>
                         <div>${c.text}</div>
-                        ${c.reply?`<div style="background:#f0fdf4; padding:5px; margin-top:5px; font-size:12px; border-radius:5px;">👨‍🏫 ${c.reply}</div>`:''}
+                        ${c.reply?`<div style="background:#f0fdf4; border-right:3px solid #2ecc71; padding:8px; margin-top:8px; font-size:13px; border-radius:8px;"><b>👨‍🏫 رد المعلم:</b><br>${c.reply}</div>`:''}
                     </div>`;
                 }).join('');
             });
@@ -507,7 +541,14 @@
         function toggleEditMode(){ const view = document.getElementById('view-mode'); const edit = document.getElementById('edit-mode'); if(view.style.display !== 'none') { view.style.display = 'none'; edit.style.display = 'block'; document.getElementById('edit-name').value = userData.name; document.getElementById('edit-grade').value = userData.grade; } else { view.style.display = 'block'; edit.style.display = 'none'; } }
         function saveProfileData(){ const n = document.getElementById('edit-name').value; const g = document.getElementById('edit-grade').value; showLoader(); db.collection('users').doc(currentUser.uid).update({name:n, grade:g}).then(()=>{ hideLoader(); toggleEditMode(); Swal.fire('تم','','success'); }); }
         function loadStats(){ db.collection('results').where('uid','==',currentUser.uid).get().then(snap=>{ let total=0, sum=0; snap.forEach(d=>{ total++; sum += (d.data().score/d.data().total)*100; }); document.getElementById('st-exams').innerText = total; document.getElementById('st-score').innerText = total>0 ? Math.round(sum/total)+'%' : '0%'; }); }
-        function loadBadges(){ const box = document.getElementById('badges-container'); db.collection('user_badges').where('uid','==',currentUser.uid).get().then(snap=>{ if(snap.empty){ box.innerHTML='<p style="grid-column:1/-1; text-align:center; color:#999; font-size:12px;">لا توجد شارات.</p>'; document.getElementById('st-badges').innerText='0'; return; } box.innerHTML = ''; document.getElementById('st-badges').innerText = snap.size; snap.forEach(doc=>{ const b = doc.data(); box.innerHTML += `<div style="text-align:center; padding:10px;"><i class="${b.icon} badge-icon" style="color:${b.color||'gold'}; font-size:25px;"></i><span style="display:block; font-size:11px;">${b.title}</span></div>`; }); }); }
+        function loadBadges(){ 
+            const box = document.getElementById('badges-container'); 
+            db.collection('user_badges').where('uid','==',currentUser.uid).get().then(snap=>{ 
+                if(snap.empty){ box.innerHTML='<p style="grid-column:1/-1; text-align:center; color:#999; font-size:12px;">لا توجد شارات.</p>'; document.getElementById('st-badges').innerText='0'; return; } 
+                box.innerHTML = ''; document.getElementById('st-badges').innerText = snap.size; 
+                snap.forEach(doc=>{ const b = doc.data(); box.innerHTML += `<div style="text-align:center; padding:10px;"><i class="${b.icon}" style="color:${b.color||'gold'}; font-size:25px;"></i><span style="display:block; font-size:11px;">${b.title}</span></div>`; }); 
+            }); 
+        }
         function loadPrivateChat(){ const box = document.getElementById('chat-messages'); db.collection('messages').doc(currentUser.uid).collection('chat').orderBy('timestamp').onSnapshot(snap=>{ box.innerHTML = ''; snap.forEach(d=>{ const m = d.data(); box.innerHTML += `<div style="max-width:80%; padding:8px 12px; border-radius:15px; font-size:13px; align-self:${m.sender === 'student' ? 'flex-start' : 'flex-end'}; background:${m.sender === 'student' ? 'var(--main)' : '#eee'}; color:${m.sender === 'student' ? 'white' : 'black'};">${m.text}</div>`; }); box.scrollTop = box.scrollHeight; }); }
         function sendPrivateMessage(){ const txt = document.getElementById('msg-input').value.trim(); if(!txt) return; const ref = db.collection('messages').doc(currentUser.uid); ref.set({ studentName: userData.name, lastMessage: txt, lastTime: new Date().toISOString(), unread: true, uid: currentUser.uid }, {merge:true}); ref.collection('chat').add({ text: txt, sender: 'student', timestamp: new Date().toISOString() }); document.getElementById('msg-input').value=''; }
         function checkAutoBadges(){ db.collection('badges_rules').where('type','==','auto').get().then(rules=>{ if(rules.empty) return; db.collection('results').where('uid','==',currentUser.uid).get().then(resSnap=>{ const totalExams = resSnap.size; let perfectScores = 0; resSnap.forEach(r=>{ if(r.data().score == r.data().total) perfectScores++; }); rules.forEach(ruleDoc=>{ const rule = ruleDoc.data(); let earned = false; if(rule.condition === 'exams_count' && totalExams >= rule.threshold) earned = true; if(rule.condition === 'perfect_score' && perfectScores >= rule.threshold) earned = true; if(earned){ db.collection('user_badges').where('uid','==',currentUser.uid).where('badgeId','==',ruleDoc.id).get().then(bCheck=>{ if(bCheck.empty){ db.collection('user_badges').add({ uid: currentUser.uid, badgeId: ruleDoc.id, title: rule.title, icon: rule.icon, color: rule.color, timestamp: new Date().toISOString() }); Swal.fire({ title: 'ألف مبروك! 🏆', text: `حصلت على شارة: ${rule.title}`, backdrop: `rgba(0,0,123,0.4)` }); } }); } }); }); }); }
